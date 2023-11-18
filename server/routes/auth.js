@@ -3,7 +3,7 @@ const router = require('express').Router(); // import express and create instanc
 const db = require('../models');
 const jwt = require('jsonwebtoken');
 
-
+// route for POST request to './register'
 router.post('/register', async function(req, res, next) {
     try{
         const user = await db.User.create(req.body);
@@ -20,7 +20,7 @@ router.post('/register', async function(req, res, next) {
 
         next(err);
     }
-});  // route for POST request to './register'
+});
 
 router.post('/login', async function(req, res, next) {
     try{

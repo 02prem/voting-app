@@ -14,12 +14,35 @@ const handle = require('./handlers');
 // const handle = require('./handlers/index');
 // const myErrorHandler = handle.errorHandler;
 
+// Creating a Admin by default
+try{
+    const ad = db.Admin.findOne({username: 'admin_1', });
+    if (ad == null){
+        const newAdmin = new db.Admin({
+            username: 'admin_1',
+            password: 'admin_1',
+            polls: []
+        });
+
+        newAdmin.save().then(
+            savedAdmin => {console.log('Admin entry saved to database: ', savedAdmin);}
+        ).catch(
+            err => {console.error('Error saving admin entry: ', err);}
+        );
+    }
+}
+catch(err){
+    next();
+}
+
 app.use(cors());
 app.use(bodyparser.json());
 
 app.get('/', (req, res) => res.json({ hello: 'world' }));
 
+app.use('/api/admin', routes.admin);
 app.use('/api/auth', routes.auth);
+app.use('/api/polls', routes.poll);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

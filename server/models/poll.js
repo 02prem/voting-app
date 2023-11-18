@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const optionSchema = new mongoose.Schema({
-    options: String,
+    option: String,
     votes: {
         type: Number,
         default: 0
@@ -9,15 +9,15 @@ const optionSchema = new mongoose.Schema({
 });
 
 const pollSchema = new mongoose.Schema({
-    user: {
+    admin: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },  // user who created the poll
+        ref: 'Admin'
+    },  // admin who created the poll
     question: String,
     options: [optionSchema],
     voted: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User' // just like foreign key
     }]  // [] -> defines array, it means array of users who have voted
 });
 
