@@ -1,5 +1,4 @@
 const router = require('express').Router(); // import express and create instance of Router
-// const handle = require('../handlers');
 const db = require('../models');
 const jwt = require('jsonwebtoken');
 
