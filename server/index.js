@@ -1,8 +1,13 @@
-// const express = require('express'); // import express, express to create server
-// const app = express();  // instance of express
+const express = require('express'); // import express, express to create server
+const app = express();  // instance of express
+const cors = require('cors');
+const bodyparser = require('body-parser');
 
+require('dotenv').config();
 const http = require('http');   // import http
 
+const routes = require('./routes');
+const db = require('./models');
 const handle = require('./handlers/index');
 const myErrorHandler = handle.errorHandler;
 
@@ -13,12 +18,15 @@ const server = http.createServer((req, res) => {
     }
     else{
         myErrorHandler(req,res);
-        // res.writeHead(404, {'Content-Type': 'application/json'});
-        // res.end(JSON.stringify({ error: 'Not Found' }));
     }
 });
 
-const port = 4000;
+app.use(cors());
+app.use(bodyparser.json());
+
+app.use('/api/auth', routes.auth);
+
+const port = process.env.PORT;
 
 server.listen(port, () => {
     console.log('Server started on port 4000');

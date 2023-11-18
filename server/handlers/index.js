@@ -4,6 +4,10 @@
 //     });
 // };
 
+module.exports = {
+    ...require('./auth')
+};
+
 const errorHandler = (req, res) => {
     res.writeHead(404, {'Content-Type': 'application/json'});
     res.end(JSON.stringify({ error: 'Not Found' }));
