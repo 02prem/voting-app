@@ -8,8 +8,8 @@ mongoose.connect('mongodb://localhost/vote');
 const db = require('./models');
 
 const users = [
-  { username: 'username', password: 'password' },
-  { username: 'kelvin', password: 'password' },
+  { username: 'xyz', password: 'password' },
+  { username: 'prem', password: 'password' },
 ];
 
 const polls = [
@@ -30,26 +30,26 @@ const seed = async () => {
     await db.Poll.deleteMany({});
     console.log('DROP ALL POLLS');
 
-    // await Promise.all(
-    //   users.map(async user => {
-    //     const data = await db.User.create(user);
-    //     await data.save();
-    //   }),
-    // );
-    // console.log('CREATED USERS', JSON.stringify(users));
+    await Promise.all(
+      users.map(async user => {
+        const data = await db.User.create(user);
+        await data.save();
+      }),
+    );
+    console.log('CREATED USERS', JSON.stringify(users));
 
-    // await Promise.all(
-    //   polls.map(async poll => {
-    //     poll.options = poll.options.map(option => ({ option, votes: 0 }));
-    //     const data = await db.Poll.create(poll);
-    //     const user = await db.User.findOne({ username: 'username' });
-    //     data.user = user;
-    //     user.polls.push(data._id);
-    //     await user.save();
-    //     await data.save();
-    //   }),
-    // );
-    // console.log('CREATED POLLS', JSON.stringify(polls));
+    await Promise.all(
+      polls.map(async poll => {
+        poll.options = poll.options.map(option => ({ option, votes: 0 }));
+        const data = await db.Poll.create(poll);
+        const admin_poll_maker = await db.Admin.findOne({ username: 'admin_1' });
+        data.admin = admin_poll_maker;
+        admin_poll_maker.polls.push(data._id);
+        await admin_poll_maker.save();
+        await data.save();
+      }),
+    );
+    console.log('CREATED POLLS', JSON.stringify(polls));
   } catch (err) {
     console.error(err);
   }
